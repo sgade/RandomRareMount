@@ -1,0 +1,7 @@
+## Interface: 100105
+## Title: RandomRareMount
+## Notes: Selects a random mount based on rarity
+## Author: Sören Gade
+## Version: 1.0
+RandomRareMount.lua
+Mounts.lua
