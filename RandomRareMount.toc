@@ -2,7 +2,7 @@
 ## Title: RandomRareMount
 ## Notes: Selects a random favorite mount based on rarity
 ## Author: Kiaro-Frostwolf
-## Version: 1.0.1
+## Version: @project-version@
 
 RandomRareMount.lua
 MountsRarity.lua
