@@ -35,7 +35,11 @@ end
 ---@param mountId number
 ---@return number | nil
 function RandomRareMountAddon:GetMountRarityByID(mountId)
-    return RandomRareMountAddon.MountsRarity["" .. mountId]
+    if ( MountsRarityAddon == nil or MountsRarityAddon.MountsRarity == nil ) then
+        return nil
+    end
+
+    return MountsRarityAddon.MountsRarity[tostring(mountId)]
 end
 
 ---Calculates a weighted random index for the given array.
@@ -93,6 +97,11 @@ function RandomRareMountAddon:DetermineRandomFavoriteMount()
 end
 
 function RandomRareMountAddon:SummonRandomFavoriteMount()
+    if ( MountsRarityAddon == nil or MountsRarityAddon.MountsRarity == nil ) then
+        print("RandomRareMount: MountsRarity addon not loaded.")
+        return nil
+    end
+
     local mount = RandomRareMountAddon:DetermineRandomFavoriteMount()
     if (mount == nil) then
         print("Could not determine random mount.")
