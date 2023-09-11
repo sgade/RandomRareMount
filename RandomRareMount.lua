@@ -102,8 +102,3 @@ function RandomRareMountAddon:SummonRandomFavoriteMount()
     print("Mount " .. mount.mountInfo.name .. " is owned by " .. string.format("%.02f", mount.rarity) .. "% of players.")
     C_MountJournal.SummonByID(mount.mountInfo.mountId)
 end
-
-SLASH_RANDOMRAREMOUNT1 = "/rrm"
-SlashCmdList["RANDOMRAREMOUNT"] = function(msg)
-    RandomRareMountAddon:SummonRandomFavoriteMount()
-end

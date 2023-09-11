@@ -1,7 +1,7 @@
 ## Interface: 100107
 ## Title: RandomRareMount
 ## Notes: Selects a random favorite mount based on rarity
-## Author: Sören Gade
+## Author: Kiaro-Frostwolf
 ## Version: 1.0.1
 
 RandomRareMount.lua
