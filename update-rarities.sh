@@ -2,6 +2,8 @@
 
 set -eu
 
+MOUNTS_FILE="Mounts.lua"
+
 function get() {
     curl "$1" \
         -X 'GET' \
@@ -17,5 +19,21 @@ MOUNTSRARITY_PATH=$(echo "$VERSION_RESPONSE" | jq .mountsrarity | tr -d '"')
 #echo "https://api.dataforazeroth.com${MOUNTSRARITY_PATH}"
 
 MOUNTSRARITY_RESPONSE=$(get "https://www.dataforazeroth.com${MOUNTSRARITY_PATH}")
-echo "Downloaded $(echo "$MOUNTSRARITY_RESPONSE" | jq '.mounts | length') mounts."
-echo "$MOUNTSRARITY_RESPONSE" | jq > mounts.json
+MOUNTSRARITY=$(echo "$MOUNTSRARITY_RESPONSE" | jq '.mounts | to_entries')
+echo "Downloaded $(echo "$MOUNTSRARITY" | jq 'length') mounts."
+#echo "$MOUNTSRARITY" | jq > mounts.json
+
+# Writing file header
+echo "-- AUTOMATICALLY GENERATED. MODIFICATION WILL BE OVERWRITTEN" > $MOUNTS_FILE
+# Writing file contents brackets
+{
+    echo "-- Timestamp: $(date)"
+    echo ""
+    echo "RandomRareMountAddon.MountsRarity = {"
+    echo "  mounts = {"
+    echo "$MOUNTSRARITY" | jq -r '.[] | "    [\"" + .key + "\"] = " + ( .value | tostring ) + ","' >> $MOUNTS_FILE
+    echo "  }"
+    echo "}"
+} >> $MOUNTS_FILE
+
+echo "$MOUNTS_FILE written."
