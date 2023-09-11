@@ -1,4 +1,4 @@
-name: Update mountsrarities
+name: Update MountsRarity
 
 on:
   workflow_dispatch:
@@ -7,12 +7,12 @@ on:
 
 jobs:
   update_mountrarities:
-    name: Update mountsrarities
+    name: Update MountsRarity
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Update rarities
+      - name: Update MountsRarity.lua
         run: ./update-rarities.sh
 
       - name: Create pull request
@@ -23,5 +23,5 @@ jobs:
           title: "[Automated] Update mount rarities"
           assignees: sgade
           reviewers: sgade
-          branch: update-mountsrarities
+          branch: update-mountsrarity
           delete-branch: true

@@ -3,5 +3,8 @@
 ## Notes: Selects a random favorite mount based on rarity
 ## Author: Sören Gade
 ## Version: 1.0.1
+
 RandomRareMount.lua
-Mounts.lua
+MountsRarity.lua
+
+SlashCommands.lua

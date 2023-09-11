@@ -35,7 +35,7 @@ end
 ---@param mountId number
 ---@return number | nil
 function RandomRareMountAddon:GetMountRarityByID(mountId)
-    return RandomRareMountAddon.MountsRarity.mounts["" .. mountId]
+    return RandomRareMountAddon.MountsRarity["" .. mountId]
 end
 
 ---Calculates a weighted random index for the given array.
