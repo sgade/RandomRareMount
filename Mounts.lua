@@ -1,5 +1,5 @@
 -- AUTOMATICALLY GENERATED. MODIFICATION WILL BE OVERWRITTEN
--- Timestamp: Mon Sep 11 21:29:50 CEST 2023
+-- Source: https://www.dataforazeroth.com/dynamic/mountsrarity.d0ec0a0d7e10ef77ca27e672a1863667.json
 
 RandomRareMountAddon.MountsRarity = {
   mounts = {
