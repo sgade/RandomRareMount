@@ -1,0 +1,7 @@
+{
+    "Lua.diagnostics.globals": [
+        "SlashCmdList",
+        "hash_SlashCmdList",
+        "DEFAULT_CHAT_FRAME"
+    ]
+}

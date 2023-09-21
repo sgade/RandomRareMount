@@ -4,7 +4,16 @@
 --  Copyright (c) 2023 Sören Gade
 ]]--
 
-RandomRareMountAddon = {}
+---@class AceAddon
+local RandomRareMountAddon = LibStub:GetLibrary("AceAddon-3.0"):NewAddon("RandomRareMount", "AceConsole-3.0", "AceEvent-3.0")
+if not RandomRareMountAddon then return end
+
+---@class MountsRarity: { GetData: function, GetRarityByID: function }
+local libMountsRarity = LibStub:GetLibrary("MountsRarity-2.0", true)
+if not libMountsRarity then
+    RandomRareMountAddon:Print("ERROR: Required library MountsRarity not found.")
+    return
+end
 
 ---@alias ShortMountInfo { name: string, mountId: number, spellId: number }
 
@@ -29,17 +38,6 @@ function RandomRareMountAddon:GetFavoriteMounts()
     end
 
     return favoriteMounts
-end
-
----Returns a mount's rarity value.
----@param mountId number
----@return number | nil
-function RandomRareMountAddon:GetMountRarityByID(mountId)
-    if ( MountsRarityAddon == nil or MountsRarityAddon.MountsRarity == nil ) then
-        return nil
-    end
-
-    return MountsRarityAddon.MountsRarity[tostring(mountId)]
 end
 
 ---Calculates a weighted random index for the given array.
@@ -75,7 +73,7 @@ function RandomRareMountAddon:DetermineRandomFavoriteMount()
     local favoriteMountsWithRarities = {}
 
     for i, mountInfo in ipairs(favoriteMounts) do
-        local rarity = RandomRareMountAddon:GetMountRarityByID(mountInfo.mountId)
+        local rarity = libMountsRarity:GetRarityByID(mountInfo.mountId)
 
         if (rarity ~= nil) then
             table.insert(favoriteMountsWithRarities, {
@@ -84,7 +82,7 @@ function RandomRareMountAddon:DetermineRandomFavoriteMount()
                 invertedRarity = ( 1 / rarity )
             })
         else
-            print("WARN: No mount data for " .. mountInfo.name)
+            self:Print("WARN: No mount data for " .. mountInfo.name)
         end
     end
 
@@ -97,17 +95,44 @@ function RandomRareMountAddon:DetermineRandomFavoriteMount()
 end
 
 function RandomRareMountAddon:SummonRandomFavoriteMount()
-    if ( MountsRarityAddon == nil or MountsRarityAddon.MountsRarity == nil ) then
-        print("RandomRareMount: MountsRarity addon not loaded.")
+    if ( libMountsRarity == nil or libMountsRarity.GetData() == nil ) then
+        self:Print("MountsRarity addon not loaded.")
         return nil
     end
 
     local mount = RandomRareMountAddon:DetermineRandomFavoriteMount()
     if (mount == nil) then
-        print("Could not determine random mount.")
+        self:Print("Could not determine random mount.")
         return
     end
 
-    print("Mount " .. mount.mountInfo.name .. " is owned by " .. string.format("%.02f", mount.rarity) .. "% of players.")
+    self:Print("Mount " .. mount.mountInfo.name .. " is owned by " .. string.format("%.02f", mount.rarity) .. "% of players.")
     C_MountJournal.SummonByID(mount.mountInfo.mountId)
+end
+
+function RandomRareMountAddon:SlashCommands(args)
+    local arg1 = self:GetArgs(args, 1)
+
+    if arg1 and string.upper(arg1) == "FAVORITES" then
+        self:SummonRandomFavoriteMount()
+    else
+        -- TODO: implement
+        self:Print("Random across all mounts is not yet implemented.")
+    end
+end
+
+-- Lifecycle events
+
+function RandomRareMountAddon:OnInitialize()
+    -- stub
+end
+
+function RandomRareMountAddon:OnEnable()
+    self:RegisterChatCommand("randomraremount", "SlashCommands")
+    self:RegisterChatCommand("rrm", "SlashCommands")
+end
+
+function RandomRareMountAddon:OnDisable()
+    self:UnregisterChatCommand("randomraremount")
+    self:UnregisterChatCommand("rrm")
 end
