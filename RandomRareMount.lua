@@ -16,8 +16,9 @@ if not libMountsRarity then
 end
 
 ---@alias ShortMountInfo { name: string, mountId: number, spellId: number }
+---@alias MountFilter fun(name: string, spellID: number, isActive: boolean, sourceType: number, isFavorite: boolean, isFactionSpecific: boolean, faction: number?, isForDragonriding: boolean): boolean
 
----@param filter fun(name: string, spellID: number, isActive: boolean, sourceType: number, isFavorite: boolean, isFactionSpecific: boolean, faction: number?, isForDragonriding: boolean): boolean
+---@param filter MountFilter
 function RandomRareMountAddon:GetMounts(filter)
     ---@type ShortMountInfo[]
     local selectedMounts = {}
@@ -49,6 +50,7 @@ function RandomRareMountAddon:GetMounts(filter)
 end
 
 function RandomRareMountAddon:GetAllMounts()
+    ---@type MountFilter
     local filter = function (_, _, isActive, _, _, _, _, _)
         return isActive ~= true
     end
@@ -58,6 +60,7 @@ end
 
 ---Returns the player's favorite mounts from the mount journal.
 function RandomRareMountAddon:GetFavoriteMounts()
+    ---@type MountFilter
     local filter = function (_, _, isActive, _, isFavorite, _, _, _)
         return isActive ~= true and isFavorite
     end
@@ -138,7 +141,7 @@ function RandomRareMountAddon:SlashCommands(args)
 
     ---@type ShortMountInfo[]
     local potentialMounts = {}
-    if arg1 and string.upper(arg1) == "FAVORITES" then
+    if arg1 and string.upper(arg1) == "FAVORITE" then
         potentialMounts = self:GetFavoriteMounts()
     else
         potentialMounts = self:GetAllMounts()

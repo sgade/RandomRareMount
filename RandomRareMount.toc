@@ -3,8 +3,7 @@
 ## Notes: Selects a random favorite mount based on rarity
 ## Author: Kiaro-Frostwolf
 ## Version: @project-version@
-## Dependencies: MountsRarity
 
-Libs/libs.xml
+Libs/Libs.xml
 
 RandomRareMount.lua

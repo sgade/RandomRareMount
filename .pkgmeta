@@ -1,2 +1,7 @@
 ignore:
   - README.md
+
+externals:
+  Libs/MountsRarity-2.0:
+    url: https://github.com/sgade/MountsRarity
+    tag: latest
